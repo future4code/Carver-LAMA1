@@ -22,7 +22,9 @@ export default class UserController {
         }
 
         try {
+        
             const token = await this.userBusiness.signup(input)
+           
             res.send({message: "Usuário Cadastrado com sucesso!", token})
 
         } catch (error:any) {

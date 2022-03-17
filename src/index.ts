@@ -6,3 +6,4 @@ const userController = new UserController()
 
 app.post("/user/signup", userController.signup)
 app.post("/user/login", userController.login)
+

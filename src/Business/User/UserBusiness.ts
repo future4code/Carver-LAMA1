@@ -31,6 +31,7 @@ export default class UserBusiness {
         }
 
         const registeredUser = await this.userData.findByEmail(email)
+        console.log(registeredUser)
 
         if(registeredUser){
             throw new Error("Email já cadastrado!")
@@ -49,7 +50,7 @@ export default class UserBusiness {
         )
 
         await this.userData.insert(user)
-        const token = this.authenticator.generateToken({id})
+        const token = this.authenticator.generateToken({id, role})
 
         return token
     }
@@ -80,7 +81,7 @@ export default class UserBusiness {
             throw new Error("Senha inválida!")
         }
 
-        const token = this.authenticator.generateToken({id})
+        const token = this.authenticator.generateToken({id: registeredUser.getId(), role: registeredUser.getRole()})
 
         return token
     }
