@@ -30,4 +30,29 @@ export default class BandController {
             res.send({ message })
         }
     }
+
+    getBandByIdOrName = async(req: Request, res: Response) =>{
+
+        const {id, name} = req.body
+        const token = req.headers.authorization as string
+
+        try {
+
+            if(id){
+                const band = await this.bandBusiness.getBandById(token, id)
+                // const createUserBand = await.
+                // const showBand = await 
+                res.status(200).send(band)
+            }
+
+            if(name){
+
+            }
+            
+        } catch (error:any) {
+            res.status(error.code || 400).send(error.message || error.sqlMessage)
+        }
+
+    }
+
 }

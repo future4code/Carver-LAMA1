@@ -82,11 +82,7 @@ export default class UserBusiness {
             throw new Error("Senha inválida!")
         }
 
-<<<<<<< HEAD
-        const token = this.authenticator.generateToken({id: registeredUser.getId(), role: registeredUser.getRole()})
-=======
         const token = this.authenticator.generateToken({ id: id, role: role })
->>>>>>> 1da1f89d96e8f32fdc31cc855420403d139c3786
 
         return token
     }
