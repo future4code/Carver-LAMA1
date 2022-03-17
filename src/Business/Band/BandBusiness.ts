@@ -30,25 +30,26 @@ export default class BandBusiness {
 
         const tokenData = this.authenticator.getTokenData(token)
 
+        if(tokenData.role !== "ADMIN"){
+            throw new Error("Só administradores podem criar bandas!")
+        }
+
         const registeredBand = await this.bandData.findByName(name)
 
         if(registeredBand){
             throw new Error("Já existe uma banda com este nome!")
         }
 
-        const registeredUser = await this.userData.getUserByid(tokenData.id)
-
-        if(registeredUser.role !== USER_ROLES.ADMIN) {
-            throw new Error("Apenas administradores podem registrar uma banda")
-        }
-
         const idBand: string = this.idGenerator.generate()
+
+        const creator_id = tokenData.id
 
         const band = new Band(
             idBand,
             name,
             music_genre,
-            responsible
+            responsible,
+            creator_id
         )
 
         const result = await this.bandData.insert(band)

@@ -49,7 +49,7 @@ export default class UserBusiness {
         )
 
         await this.userData.insert(user)
-        const token = this.authenticator.generateToken({id})
+        const token = this.authenticator.generateToken({id, role})
 
         return token
     }
@@ -69,9 +69,10 @@ export default class UserBusiness {
             statusCode = 401
             throw new Error("O E-mail ainda não é cadastrado!")
         }
-        
+
         const hashedPassword = registeredUser.getPassword()
         const id = registeredUser.getId()
+        const role = registeredUser.getRole()
 
         const comparedPassword: boolean = await this.hashManager.compareHash(password, hashedPassword)
 
@@ -80,7 +81,7 @@ export default class UserBusiness {
             throw new Error("Senha inválida!")
         }
 
-        const token = this.authenticator.generateToken({id})
+        const token = this.authenticator.generateToken({ id: id, role: role })
 
         return token
     }
