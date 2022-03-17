@@ -6,6 +6,7 @@ export interface AuthenticationData {
     role: USER_ROLE
 }
 
+
 export class Authenticator {
     public generateToken(payload: AuthenticationData): string {
         const token = jwt.sign(

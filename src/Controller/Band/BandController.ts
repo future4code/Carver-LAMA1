@@ -23,7 +23,7 @@ export default class BandController {
 
         try {
             const band = await this.bandBusiness.registerBand(token, input)
-            res.send({message: "Banda cadastrada com sucesso!", token})
+            res.send({message: "Banda cadastrada com sucesso!", band})
         } catch (error:any) {
             res.statusCode = 400
             let message = error.sqlMessage || error.message
