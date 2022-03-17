@@ -1,8 +1,11 @@
 import * as jwt from "jsonwebtoken";
+import { USER_ROLE } from "../Model/User";
 
 export interface AuthenticationData {
-    id: string
+    id: string,
+    role: USER_ROLE
 }
+
 
 export class Authenticator {
     public generateToken(payload: AuthenticationData): string {
