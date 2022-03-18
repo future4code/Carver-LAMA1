@@ -1,22 +1,22 @@
 export enum WEEK_DAY {
     SEXTA = "SEXTA",
-    SABADO = "SABADO",
+    SÁBADO = "SÁBADO",
     DOMINGO = "DOMINGO"
 }
 
 export class Show {
     constructor (
         private id: string,
-        private weekDay: WEEK_DAY,
-        private startTime: number,
-        private endTime: number,
-        private bandId: string
+        private week_day: WEEK_DAY,
+        private start_time: number,
+        private end_time: number,
+        private band_id: string
     ){
         this.id = id;
-        this.weekDay = weekDay;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.bandId = bandId
+        this.week_day = week_day;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.band_id = band_id
     }
 
         public getId() {
@@ -24,24 +24,29 @@ export class Show {
         }
     
         public getWeekDay() {
-            return this.weekDay
+            return this.week_day
         }
     
         public getStartTime() {
-            return this.startTime
+            return this.start_time
         }
     
         public getEndTime() {
-            return this.endTime
+            return this.end_time
         }
 
         public getBandId() {
-            return this.bandId
+            return this.band_id
         }
     
         static toShowModel(data: any): Show {
-            return new Show(data.id, data.weekDay, data.startTime, data.endTime, data.bandId)
+            return new Show(data.id, data.week_day, data.start_time, data.end_time, data.band_id)
         }
 }
 
-
+export type showInputDTO ={
+    band_id: string, 
+    week_day: WEEK_DAY, 
+    start_time: number, 
+    end_time: number
+}
