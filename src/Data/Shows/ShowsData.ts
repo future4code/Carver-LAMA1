@@ -53,7 +53,7 @@ export default class ShowData extends BaseDatabase implements ShowRepository {
                 .select()
                 .where('start_time', `${startTime}`)
                
-            return show[0] && Show.toShowModel(show[0])
+            return show
         } catch (error: any) {
             throw new Error(error.message)
         }
@@ -74,7 +74,7 @@ export default class ShowData extends BaseDatabase implements ShowRepository {
 
     getShowByDay = async (weekDay: string) => {
         try {
-            const shows: Show[] = await BaseDatabase
+            const shows: any = await BaseDatabase
                 .connection(this.TABLE_NAME)
                 .select()
                 .innerJoin(this.TABLE_NAME_BAND, 'Lama_Band.id', 'Lama_Shows.band_id')

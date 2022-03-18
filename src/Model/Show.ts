@@ -12,7 +12,7 @@ export class Show {
         private week_day: WEEK_DAY,
         private start_time: number,
         private end_time: number,
-        private band_id: string
+        private band_id: string,
     ){
         this.id = id;
         this.week_day = week_day;
@@ -40,7 +40,7 @@ export class Show {
         public getBandId() {
             return this.band_id
         }
-    
+
         static toShowModel(data: any): Show {
             return new Show(data.id, data.week_day, data.start_time, data.end_time, data.band_id)
         }
