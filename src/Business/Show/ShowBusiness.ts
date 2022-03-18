@@ -30,7 +30,11 @@ export default class ShowBusiness {
             throw new Error("Não haverá show neste dia!")
         }
 
-        this.authenticator.getTokenData(token)
+        const tokenValidation = this.authenticator.getTokenData(token)
+
+        if (tokenValidation.role !== "ADMIN") {
+            throw new CustomError(403, "Desculpe,você não tem permissão para acessar essa área.")
+        }
 
         if (!band_id || !week_day || !start_time || !end_time) {
             throw new Error("Insira todos os campos!")
@@ -59,24 +63,29 @@ export default class ShowBusiness {
             throw new Error("O show não pode terminar nesse horário!")
         }
 
-        const searchStartTime = await this.showData.getShowByStartTime(start_time)
-        const searchEndTime = await this.showData.getShowByEndTime(end_time)   
+        const showTime: number[] = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
 
-        console.log(searchEndTime, searchStartTime)
-        
-        const startTime = searchStartTime.getStartTime()
-        const endTime = searchEndTime.getEndTime()
+        const horaShows = await this.showData.getShowByDay(week_day)
 
-        console.log(startTime, endTime)
-        
-        if (searchEndTime === undefined && searchStartTime === undefined) {
-            if (startTime < start_time || endTime > end_time) {
-                throw new Error("O show não pode ser marcado nesse horário!")
+        if(horaShows === undefined){
+            for (let initialTime of horaShows){
+                for (var i = initialTime.start_time; i < initialTime.end_time; i++){
+                    if (end_time === i) {
+                        throw new CustomError(400, 'já existe show cadastrado no horário deste dia')
+                    }
+                }
             }
-            if (startTime < start_time && endTime > end_time) {
-                throw new Error("O show não pode ser marcado nesse horário!")
+        } else {
+            for (let initialTime of horaShows){
+                for (var i = initialTime.start_time; i < initialTime.end_time; i++){
+                    if (start_time === i) {
+                        throw new CustomError(400, 'já existe show cadastrado no horário deste dia')
+                    }
+                }
             }
-            const id: string = this.idGenerator.generate()
+        }
+
+        const id:string = this.idGenerator.generate()
             const show = new Show(
                 id,
                 week_day,
@@ -84,55 +93,8 @@ export default class ShowBusiness {
                 end_time,
                 band_id
             )
-
-            return await this.showData.insert(show)
-        }
-
-        if (startTime < start_time || endTime > end_time) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        }
-        if (searchEndTime && searchStartTime === undefined) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        } else if (searchEndTime === undefined && searchStartTime) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        }
-        if (startTime === start_time) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        } else if (endTime === end_time) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        }
-        if (startTime > start_time && endTime < end_time) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        }
-        if (startTime < start_time && endTime < end_time) {
-            throw new Error("O show não pode ser marcado nesse horário!")
-        }
-        if (startTime > start_time && startTime > end_time && endTime > end_time && endTime > start_time) {
-            const id: string = this.idGenerator.generate()
-            const show = new Show(
-                id,
-                week_day,
-                start_time,
-                end_time,
-                band_id
-            )
-
-            return await this.showData.insert(show)
-        }
-        if (startTime < start_time && startTime < end_time && endTime < end_time && endTime < start_time) {
-
-            const id: string = this.idGenerator.generate()
-            const show = new Show(
-                id,
-                week_day,
-                start_time,
-                end_time,
-                band_id
-            )
-
-            return await this.showData.insert(show)
-
-        } 
+                    
+        return await this.showData.insert(show)        
     }
 
     getShowByDay = async (token: string, weekDay: string): Promise<showOutputDTO[]> => {
