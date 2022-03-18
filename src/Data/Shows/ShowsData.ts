@@ -52,8 +52,8 @@ export default class ShowData extends BaseDatabase implements ShowRepository {
                 .connection(this.TABLE_NAME)
                 .select()
                 .where('start_time', `${startTime}`)
-
-            return show && Show.toShowModel(show)
+               
+            return show[0] && Show.toShowModel(show[0])
         } catch (error: any) {
             throw new Error(error.message)
         }
@@ -65,8 +65,8 @@ export default class ShowData extends BaseDatabase implements ShowRepository {
                 .connection(this.TABLE_NAME)
                 .select()
                 .where('end_time', `${endTime}`)
-
-            return show && Show.toShowModel(show)
+               
+            return show[0] && Show.toShowModel(show[0])
         } catch (error: any) {
             throw new Error(error.message)
         }
