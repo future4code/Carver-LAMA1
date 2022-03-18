@@ -9,3 +9,6 @@ app.post("/user/signup", userController.signup)
 app.post("/user/login", userController.login)
 
 app.post("/band/create", bandController.registerBand)
+
+
+app.get("/band", bandController.getBandByIdOrName)

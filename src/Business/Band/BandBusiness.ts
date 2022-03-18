@@ -1,3 +1,4 @@
+import { CustomError } from "../../Error/CustomError";
 import { Band, SignupBandInputDTO } from "../../Model/Band";
 import { Authenticator } from "../../Utilities/authenticator";
 import { IdGenerator } from "../../Utilities/idGenerator";
@@ -10,7 +11,7 @@ export default class BandBusiness {
 
     constructor(
         bandDataImplementation: BandRepository
-    ){
+    ) {
         this.bandData = bandDataImplementation
         this.idGenerator = new IdGenerator()
         this.authenticator = new Authenticator()
@@ -18,25 +19,25 @@ export default class BandBusiness {
 
     registerBand = async (inputHeaders: string | undefined, input: SignupBandInputDTO) => {
         const token = inputHeaders
-        const {name, music_genre, responsible} = input
-        
-        if(!name || !music_genre || !responsible){
+        const { name, music_genre, responsible } = input
+
+        if (!name || !music_genre || !responsible) {
             throw new Error("Insira todos os campos!")
         }
 
-        if(!token || token === undefined){
+        if (!token || token === undefined) {
             throw new Error("É necessário uma autorização!")
         }
 
         const tokenData = this.authenticator.getTokenData(token)
 
-        if(tokenData.role !== "ADMIN"){
+        if (tokenData.role !== "ADMIN") {
             throw new Error("Só administradores podem criar bandas!")
         }
 
         const registeredBand = await this.bandData.findByName(name)
 
-        if(registeredBand){
+        if (registeredBand) {
             throw new Error("Já existe uma banda com este nome!")
         }
 
@@ -54,5 +55,26 @@ export default class BandBusiness {
 
         const result = await this.bandData.insert(band)
         return result
+    }
+
+    getBandById = async (token: string, id: string) => {
+
+        if (!token) {
+            throw new CustomError(401, "Para realizar essa operação é necessário ter token de autorização")
+        }
+
+        if (!id) {
+            throw new CustomError(422, "Para visualizar as informações de uma banda é necesário informar o: bandId.")
+        }
+
+        this.authenticator.getTokenData(token)
+
+        const band = await this.bandData.findById(id)
+
+        if (!band) {
+            throw new CustomError(404, "Banda não encontrado, por gentileza informar um id válido")
+        }
+
+        return band
     }
 }
