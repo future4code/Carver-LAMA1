@@ -6,4 +6,6 @@ export interface ShowRepository{
     getShowByBand (bandId: string): Promise<Show>
     getShowByStartTime (startTime: number): Promise<Show>
     getShowByEndTime (endTime: number): Promise<Show>
+    getShowByDay(weekDay: string): Promise<Show[]>
+
 }

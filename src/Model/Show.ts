@@ -1,3 +1,5 @@
+import e from "express";
+
 export enum WEEK_DAY {
     SEXTA = "SEXTA",
     SÁBADO = "SÁBADO",
@@ -49,4 +51,9 @@ export type showInputDTO ={
     week_day: WEEK_DAY, 
     start_time: number, 
     end_time: number
+}
+
+export type showOutputDTO = {
+    Band: string,
+    musicGenre: string,
 }
