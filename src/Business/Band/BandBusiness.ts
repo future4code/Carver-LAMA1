@@ -1,5 +1,6 @@
 import { CustomError } from "../../Error/CustomError";
 import { Band, SignupBandInputDTO } from "../../Model/Band";
+import { Show } from "../../Model/Show";
 import { Authenticator } from "../../Utilities/authenticator";
 import { IdGenerator } from "../../Utilities/idGenerator";
 import { BandRepository } from "./BandRepository";
@@ -64,15 +65,37 @@ export default class BandBusiness {
         }
 
         if (!id) {
-            throw new CustomError(422, "Para visualizar as informações de uma banda é necesário informar o: bandId.")
+            throw new CustomError(422, "Para visualizar as informações de uma banda é necesário informar o: id.")
         }
 
         this.authenticator.getTokenData(token)
 
         const band = await this.bandData.findById(id)
 
-        if (!band) {
+        if (band.length < 1) {
             throw new CustomError(404, "Banda não encontrado, por gentileza informar um id válido")
+        }
+
+        return band
+    }
+
+
+    getBandByName = async (token: string, name: string) => {
+
+        if (!token) {
+            throw new CustomError(401, "Para realizar essa operação é necessário ter token de autorização")
+        }
+
+        if (!name) {
+            throw new CustomError(422, "Para visualizar as informações de uma banda é necesário informar o: name.")
+        }
+
+        this.authenticator.getTokenData(token)
+
+        const band = await this.bandData.findByName2(name)
+
+        if (band.length < 1) {
+            throw new CustomError(404, "Banda não encontrado, por gentileza informar um nome válido")
         }
 
         return band

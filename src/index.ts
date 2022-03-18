@@ -12,6 +12,9 @@ app.post("/user/login", userController.login)
 
 app.post("/band/create", bandController.registerBand)
 
+app.get("/show/weekDay", showController.getShowByDay)
 app.post("/show/create", showController.registerShow)
 
 app.get("/band", bandController.getBandByIdOrName)
+
+
