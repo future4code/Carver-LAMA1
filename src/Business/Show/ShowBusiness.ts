@@ -48,7 +48,7 @@ export default class ShowBusiness {
             throw new Error("O show não pode terminar nesse horário!")
         }
 
-        if(end_time < start_time){
+        if (end_time < start_time) {
             throw new Error("Esse horário não é válido!")
         }
 
@@ -63,38 +63,31 @@ export default class ShowBusiness {
             throw new Error("O show não pode terminar nesse horário!")
         }
 
-        const showTime: number[] = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-
         const horaShows = await this.showData.getShowByDay(week_day)
 
-        if(horaShows === undefined){
-            for (let initialTime of horaShows){
-                for (var i = initialTime.start_time; i < initialTime.end_time; i++){
-                    if (end_time === i) {
-                        throw new CustomError(400, 'já existe show cadastrado no horário deste dia')
-                    }
+
+        for (let initialTime of horaShows) {
+            for (var i = initialTime.start_time; i < initialTime.end_time; i++) {
+                if (start_time === i) {
+                    throw new Error('já existe show cadastrado no horário deste dia')
                 }
-            }
-        } else {
-            for (let initialTime of horaShows){
-                for (var i = initialTime.start_time; i < initialTime.end_time; i++){
-                    if (start_time === i) {
-                        throw new CustomError(400, 'já existe show cadastrado no horário deste dia')
-                    }
+                if (end_time === initialTime.end_time) {
+                    throw new Error('já existe show cadastrado no horário deste dia')
                 }
             }
         }
 
-        const id:string = this.idGenerator.generate()
-            const show = new Show(
-                id,
-                week_day,
-                start_time,
-                end_time,
-                band_id
-            )
-                    
-        return await this.showData.insert(show)        
+        const id: string = this.idGenerator.generate()
+        const show = new Show(
+            id,
+            week_day,
+            start_time,
+            end_time,
+            band_id
+        )
+
+        return await this.showData.insert(show)
+
     }
 
     getShowByDay = async (token: string, weekDay: string): Promise<showOutputDTO[]> => {

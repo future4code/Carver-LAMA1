@@ -46,32 +46,6 @@ export default class ShowData extends BaseDatabase implements ShowRepository {
         }
     }
 
-    getShowByStartTime = async (startTime: number) => {
-        try {
-            const show: Show[] = await BaseDatabase
-                .connection(this.TABLE_NAME)
-                .select()
-                .where('start_time', `${startTime}`)
-               
-            return show
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
-    }
-
-    getShowByEndTime = async (endTime: number) => {
-        try {
-            const show: Show[] = await BaseDatabase
-                .connection(this.TABLE_NAME)
-                .select()
-                .where('end_time', `${endTime}`)
-               
-            return show[0] && Show.toShowModel(show[0])
-        } catch (error: any) {
-            throw new Error(error.message)
-        }
-    }
-
     getShowByDay = async (weekDay: string) => {
         try {
             const shows: any = await BaseDatabase

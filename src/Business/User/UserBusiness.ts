@@ -31,7 +31,6 @@ export default class UserBusiness {
         }
 
         const registeredUser = await this.userData.findByEmail(email)
-        console.log(registeredUser)
 
         if(registeredUser){
             throw new Error("Email já cadastrado!")
