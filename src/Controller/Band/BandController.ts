@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import BandBusiness from "../../Business/Band/BandBusiness"
+import { BandBusiness } from "../../Business/Band/BandBusiness"
 import BandData from "../../Data/Band/BandData"
 import { SignupBandInputDTO } from "../../Model/Band"
 
@@ -23,11 +23,10 @@ export default class BandController {
 
         try {
             const band = await this.bandBusiness.registerBand(token, input)
-            res.send({ message: "Banda cadastrada com sucesso!", band })
+            res.status(201).send({ message: "Banda cadastrada com sucesso!", band })
+
         } catch (error: any) {
-            res.statusCode = 400
-            let message = error.sqlMessage || error.message
-            res.send({ message })
+            res.status(error.code || 400).send(error.message || error.sqlMessage)
         }
     }
 
@@ -37,7 +36,6 @@ export default class BandController {
         const token = req.headers.authorization as string
 
         try {
-
             if (id) {
                 const band = await this.bandBusiness.getBandById(token, id)
                 res.status(200).send(band)
@@ -51,7 +49,5 @@ export default class BandController {
         } catch (error: any) {
             res.status(error.code || 400).send(error.message || error.sqlMessage)
         }
-
     }
-
 }

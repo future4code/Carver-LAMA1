@@ -13,12 +13,14 @@ export default class BandData extends BaseDatabase implements BandRepository {
                 .insert(band)
 
             return band
+
         } catch (error: any) {
             throw new Error(error.message)
         }
     }
 
-    findByName = async (name: string): Promise<Band> => {
+    findByName = async (name: string): Promise<Band | undefined> => {
+
         try {
             const queryResult: Band[] = await BaseDatabase
                 .connection(this.TABLE_NAME)
@@ -31,7 +33,7 @@ export default class BandData extends BaseDatabase implements BandRepository {
         }
     }
 
-    findById = async (id: string): Promise<ResultBandOutputDTO[]> => {
+    findById = async (id: string): Promise<ResultBandOutputDTO[] | undefined> => {
 
         try {
             const bandShows = await BaseDatabase
@@ -62,7 +64,6 @@ export default class BandData extends BaseDatabase implements BandRepository {
                     shows: resultMapBandShow
                 })
             })
-
             return result
 
         } catch (error: any) {
@@ -70,7 +71,8 @@ export default class BandData extends BaseDatabase implements BandRepository {
         }
     }
 
-    findByName2 = async (name: string): Promise<ResultBandOutputDTO[]> => {
+    findByName2 = async (name: string): Promise<ResultBandOutputDTO[] | undefined> => {
+
         try {
             const band = await BaseDatabase
                 .connection(this.TABLE_NAME)

@@ -1,10 +1,10 @@
 import { CustomError } from "../../Error/CustomError";
-import { Band, SignupBandInputDTO } from "../../Model/Band";
+import { Band, ResultBandOutputDTO, SignupBandInputDTO } from "../../Model/Band";
 import { Authenticator } from "../../Utilities/authenticator";
 import { IdGenerator } from "../../Utilities/idGenerator";
 import { BandRepository } from "./BandRepository";
 
-export default class BandBusiness {
+export class BandBusiness {
     private idGenerator: IdGenerator;
     private authenticator: Authenticator;
     private bandData: BandRepository;
@@ -22,23 +22,24 @@ export default class BandBusiness {
         const { name, music_genre, responsible } = input
 
         if (!name || !music_genre || !responsible) {
-            throw new Error("Insira todos os campos!")
+            throw new CustomError(422, "Para cadastrar uma nova banda, é necessário informar os seguintes campos: 'name', 'music_genre', 'responsible'.")
+
         }
 
         if (!token || token === undefined) {
-            throw new Error("É necessário uma autorização!")
+            throw new CustomError(401, "Para realizar essa operação é necessário ter token de autorização.")
         }
 
         const tokenData = this.authenticator.getTokenData(token)
 
         if (tokenData.role !== "ADMIN") {
-            throw new Error("Só administradores podem criar bandas!")
+            throw new CustomError(401, "Só administradores podem criar bandas!")
         }
 
         const registeredBand = await this.bandData.findByName(name)
 
         if (registeredBand) {
-            throw new Error("Já existe uma banda com este nome!")
+            throw new CustomError(422, "Já existe uma banda com este nome!")
         }
 
         const idBand: string = this.idGenerator.generate()
@@ -57,7 +58,7 @@ export default class BandBusiness {
         return result
     }
 
-    getBandById = async (token: string, id: string) => {
+    getBandById = async (token: string, id: string): Promise<ResultBandOutputDTO[]> => {
 
         if (!token) {
             throw new CustomError(401, "Para realizar essa operação é necessário ter token de autorização")
@@ -71,15 +72,15 @@ export default class BandBusiness {
 
         const band = await this.bandData.findById(id)
 
-        if (band.length < 1) {
-            throw new CustomError(404, "Banda não encontrado, por gentileza informar um id válido")
+        if (band === undefined) {
+            throw new CustomError(404, "Banda não encontrado, por gentileza informar um id válido.")
         }
 
         return band
     }
 
 
-    getBandByName = async (token: string, name: string) => {
+    getBandByName = async (token: string, name: string): Promise<ResultBandOutputDTO[]>=> {
 
         if (!token) {
             throw new CustomError(401, "Para realizar essa operação é necessário ter token de autorização")
@@ -93,7 +94,7 @@ export default class BandBusiness {
 
         const band = await this.bandData.findByName2(name)
 
-        if (band.length < 1) {
+        if (band === undefined) {
             throw new CustomError(404, "Banda não encontrado, por gentileza informar um nome válido")
         }
 
