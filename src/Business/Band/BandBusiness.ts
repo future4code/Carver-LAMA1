@@ -1,6 +1,5 @@
 import { CustomError } from "../../Error/CustomError";
 import { Band, SignupBandInputDTO } from "../../Model/Band";
-import { Show } from "../../Model/Show";
 import { Authenticator } from "../../Utilities/authenticator";
 import { IdGenerator } from "../../Utilities/idGenerator";
 import { BandRepository } from "./BandRepository";
@@ -11,7 +10,7 @@ export default class BandBusiness {
     private bandData: BandRepository;
 
     constructor(
-        bandDataImplementation: BandRepository
+        bandDataImplementation: BandRepository,
     ) {
         this.bandData = bandDataImplementation
         this.idGenerator = new IdGenerator()
