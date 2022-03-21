@@ -1,5 +1,5 @@
-import { Band } from "../../Model/Band"
-import { bandMock, bandMock2 } from "./bandMock"
+import { Band, ResultBandOutputDTO } from "../../../src/Model/Band"
+import { bandMock, bandMock2, bandMock3, bandMock4 } from "./bandMock"
 import { BandRepositoryMock } from "./BandRepositoryMock"
 
 
@@ -22,23 +22,23 @@ export default class BandDataMock implements BandRepositoryMock{
         }
     }
 
-    findById = async (id: string): Promise<Band | undefined> => {
-        if(id === "id_mockado"){
-            return bandMock
+    findById = async (id: string): Promise<ResultBandOutputDTO[] | undefined> => {
+        if(id === "oi"){
+            return bandMock3
         }
-        if(id === "id_mockado2"){
-            return bandMock2
+        if(id === "oi2"){
+            return bandMock4
         }else{
             undefined
         }
     }
 
-    findByName2 = async (name: string): Promise<Band | undefined> => {
-        if(name === "Guns"){
-            return bandMock
+    findByName2 = async (name: string): Promise<ResultBandOutputDTO[]| undefined> => {
+        if(name === "banda1"){
+            return bandMock3
         }
-        if(name === "Skank"){
-            return bandMock2
+        if(name === "banda2"){
+            return bandMock4
         }else{
             undefined
         }

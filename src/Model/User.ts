@@ -1,11 +1,11 @@
 export class User {
-    constructor (
+    constructor(
         private id: string,
         private name: string,
         private email: string,
         private password: string,
         private role: USER_ROLE
-    ){
+    ) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -13,29 +13,29 @@ export class User {
         this.role = role
     }
 
-        public getId() {
-            return this.id
-        }
-    
-        public getName() {
-            return this.name
-        }
-    
-        public getEmail() {
-            return this.email
-        }
-    
-        public getPassword() {
-            return this.password
-        }
+    public getId() {
+        return this.id
+    }
 
-        public getRole(){
-            return this.role
-        }
-    
-        static toUserModel(data: any): User {
-            return new User(data.id, data.name, data.email, data.password, data.role)
-        }
+    public getName() {
+        return this.name
+    }
+
+    public getEmail() {
+        return this.email
+    }
+
+    public getPassword() {
+        return this.password
+    }
+
+    public getRole() {
+        return this.role
+    }
+
+    static toUserModel(data: any): User {
+        return new User(data.id, data.name, data.email, data.password, data.role)
+    }
 }
 
 export type SignupInputDTO = {
