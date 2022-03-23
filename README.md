@@ -35,10 +35,10 @@
 - Jest
 
 ### Documentação do Postaman
-https://documenter...
+https://documenter.getpostman.com/view/18386394/UVsSNPVq
 
 ### Documentação do Heroku
-https://projeto...
+https://projectlamacarver.herokuapp.com
 
 ### Nome do integrantes
 - Igor Eiiji
